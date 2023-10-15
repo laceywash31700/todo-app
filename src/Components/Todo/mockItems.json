@@ -1,0 +1,30 @@
+[
+    {
+        "difficulty": 3,
+        "text": "Do Homework",
+        "assignee": "Lacey",
+        "id": "145302fa-e89a-417b-b364-74a54c3b8d09",
+        "complete": false
+    },
+    {
+        "difficulty": 5,
+        "text": "Go To Gym For an Hour",
+        "assignee": "Lacey",
+        "id": "c0cfe2fe-21ce-4f9b-abd4-013fb045f117",
+        "complete": false
+    },
+    {
+        "difficulty": 1,
+        "text": "Meditate for 15 Minutes ",
+        "assignee": "Lacey",
+        "id": "e92baeaf-6d10-4638-aeec-8cfb01d45842",
+        "complete": false
+    },
+    {
+        "difficulty": 4,
+        "text": "Study SMH",
+        "assignee": "Lacey",
+        "id": "d9d1b4c2-69a6-439b-85e2-adee994c7743",
+        "complete": false
+    }
+]
