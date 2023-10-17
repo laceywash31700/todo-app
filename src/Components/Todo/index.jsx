@@ -2,11 +2,36 @@ import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
 
 import { v4 as uuid } from 'uuid';
-import Header from './Header';
+import Header from '../Header';
 import List from '../List';
 import Listform from '../Listform';
 import mockItems from './mockItems.json'
 
+// NOTE TO SELF:
+
+// This the  UserContext or global state its a object that you need to deconstruct first...
+// user: {
+//   name: '',
+//   email: '',
+// },
+// settings: {
+//   displayCount: 3,
+//   hideCompletedItems: false,
+//   sortWord: 'difficulty',
+//   theme: null
+// }
+
+
+// like so..
+// const { settings, user } = useContext(UserContext);
+
+
+// then you can decontruct like this...
+// const { hideCompletedItems, displayCount } = settings;
+
+
+// or this...
+// const {name, email } = user
 
 
 const Todo = () => {
@@ -19,8 +44,6 @@ const Todo = () => {
     item.id = uuid();
     item.complete = false;
     setList([...list, item]);
-    setIncomplete([...incomplete,item]);
-    console.log('im in add item', incomplete)
   }
 
   function deleteItem(id) {
