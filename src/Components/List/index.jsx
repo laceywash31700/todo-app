@@ -71,7 +71,6 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
 
   // changes sets page number and sets the idx's from start and end Idx
   const handleChange = (e, page) => {
-    console.log(e, page);
     setPage(page);
   };
 

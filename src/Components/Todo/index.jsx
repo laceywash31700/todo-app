@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
-
 import { v4 as uuid } from 'uuid';
 import Header from '../Header';
 import List from '../List';
 import Listform from '../Listform';
 import mockItems from './mockItems.json'
+import { UserContext } from '../../App';
 
 // NOTE TO SELF:
 
@@ -35,10 +35,11 @@ import mockItems from './mockItems.json'
 
 
 const Todo = () => {
-  const [defaultValues] = useState({difficulty: 4});
+  const {settings} = useContext(UserContext);
+  const [value, setValue] = useState({difficulty: 4});
   const [list, setList] = useState(mockItems);
   const [incomplete, setIncomplete] = useState([]);
-  const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
+  const { handleChange, handleSubmit } = useForm(addItem, values);
 
   function addItem(item) {
     item.id = uuid();
@@ -77,7 +78,7 @@ const Todo = () => {
           <Listform
             handleChange={handleChange}
             handleSubmit={handleSubmit}
-            defaultValues={defaultValues}
+            values={values}
           />
         </div>
         <div style={{ width: '45%' }}>
