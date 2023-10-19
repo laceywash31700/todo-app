@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from "react";
+import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import Todo from './Components/Todo';
-export const UserContext = React.createContext({})
+import SettingsModal from "./Components/SettingsModal"
+import Todo from "./Components/Todo";
+import light from "./Components/Themes/light";
+import dark from "./Components/Themes/dark";
 
 // NOTE TO SELF:
 
@@ -17,37 +20,46 @@ export const UserContext = React.createContext({})
 //   theme: null
 // }
 
-
 // like so..
 // const { settings, user } = useContext(UserContext);
-
 
 // then you can decontruct like this...
 // const { hideCompletedItems, displayCount } = settings;
 
-
 // or this...
 // const {name, email } = user
+export const UserContext = React.createContext({});
 
+const App = () => {
+  const [theme, setTheme] = useState(light);
+  const [displayCount, setDisplayCount] = useState(3);
+  const [sortWord, setSortWord] = useState("difficulty");
+  const [hideCompletedItems, setHideCompletedItems] = useState(false);
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <UserContext.Provider value={{
-        user: {
-          name: '',
-          email: '',
-        },
-        settings: {
-          displayCount: 3,
-          hideCompletedItems: false,
-          sortWord: 'difficulty',
-          theme: null
-        }
-      }}>
+  return (
+    <ThemeProvider theme={theme}>
+      <UserContext.Provider
+        value={{
+          user: {
+            name: "",
+            email: "",
+          },
+          settings: {
+            displayCount,
+            setDisplayCount,
+            toggleHideCompletedItems: () => setHideCompletedItems(!hideCompletedItems? true: false),
+            sortWord,
+            setSortWord,
+            theme,
+            toggleTheme: () => setTheme(theme === light ? dark : light )
+          },
+        }}
+      >
         <CssBaseline />
         <Todo />
       </UserContext.Provider>
-    );
-  }
-}
+    </ThemeProvider>
+  );
+};
+
+export default App;
