@@ -6,6 +6,7 @@ import List from '../List';
 import Listform from '../Listform';
 import mockItems from './mockItems.json'
 import { UserContext } from '../../App';
+import { SetMealOutlined } from '@mui/icons-material';
 
 // NOTE TO SELF:
 
@@ -35,11 +36,10 @@ import { UserContext } from '../../App';
 
 
 const Todo = () => {
-  const {settings} = useContext(UserContext);
-  const [value, setValue] = useState({difficulty: 4});
+  const [value] = useState({difficulty: 4});
   const [list, setList] = useState(mockItems);
   const [incomplete, setIncomplete] = useState([]);
-  const { handleChange, handleSubmit } = useForm(addItem, values);
+  const { handleChange, handleSubmit } = useForm(addItem, value);
 
   function addItem(item) {
     item.id = uuid();
@@ -51,6 +51,8 @@ const Todo = () => {
     const items = list.filter( item => item.id !== id );
     setList(items);
   }
+
+
 
   function toggleComplete(id) {
     const items = list.map( item => {
@@ -78,7 +80,9 @@ const Todo = () => {
           <Listform
             handleChange={handleChange}
             handleSubmit={handleSubmit}
-            values={values}
+            incomplete={incomplete}
+            listNum={list.length}
+            list={list}
           />
         </div>
         <div style={{ width: '45%' }}>
