@@ -1,8 +1,46 @@
-# React + Vite
+# toDo app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# LAB - 32
 
-Currently, two official plugins are available:
+## Deployment Test
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Author: John Cokos
+
+- [tests report](https://github.com/codefellows/code-401-javascript-example-lab/actions)
+- [front-end](https://code-401-js-lab-example.herokuapp.com/status)
+
+### Setup
+
+#### `.env` requirements
+
+- `PORT` - 5173
+
+#### Running the app
+
+- `npm run dev`
+- Endpoint:
+
+  - Returns array of Objects
+
+    ```javascript
+    [
+      {
+        difficulty: 3,
+        text: "Complete Homework",
+        assignee: "John",
+        id: "1",
+        complete: false,
+      }
+    ];
+    ```
+
+#### Tests
+
+- Unit Tests: `npm run test`
+- Lint Tests: `npm run lint`
+
+#### UML
+
+(Created with [figjam](https://www.figma.com/jam))
+
+![UML Diagram](./public/to-do-app.png)
