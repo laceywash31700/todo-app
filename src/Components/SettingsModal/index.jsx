@@ -31,9 +31,9 @@ import { UserContext } from "../../App";
 //     toggleTheme: () => setTheme(theme === light ? dark : light )
 //   },
 
-function SettingsModal() {
+function SettingsModal({listNum}) {
   const { settings } = useContext(UserContext);
-  const { theme, toggleTheme, hideCompletedItems, setSortWord, toggleHideCompletedItems} = settings;
+  const { theme, toggleTheme, hideCompletedItems, setDisplayCount, toggleHideCompletedItems, sortWord, setSortWord} = settings;
   const [open, setOpen] = useState(false);
 
 
@@ -46,16 +46,19 @@ function SettingsModal() {
     setOpen(false);
   };
 
-  const handleCompleted = (e) => {
-    e.preventDefault();
-    toggleHideCompletedItems()
+  const handleCompleted = () => {
+    toggleHideCompletedItems(!hideCompletedItems);
   };
 
-  const handleCount = () => {};
+  const handleCount = (e) => {
+    e.preventDefault()
+    setDisplayCount(e.target.value);
+  };
 
-  const handleSort = () => {};
-
-  const handleSubmit = () => {}
+  const handleSort = (e) => {
+    e.preventDefault()
+    setSortWord(e.target.value)
+    };
 
   useEffect(() => {
     console.log('Updated hideCompletedItems:', hideCompletedItems);
@@ -79,8 +82,8 @@ function SettingsModal() {
               <FormControlLabel
                 control={<Switch color="primary" />}
                 onChange={handleCompleted}
+                checked={hideCompletedItems} 
                 label="Hide completed items"
-                // Add your logic to handle the state change
               />
             </Grid>
           </Grid>
@@ -95,7 +98,11 @@ function SettingsModal() {
             id="itemsPerPage"
             type="number"
             variant="outlined"
-            // Add your logic to handle the input value
+            inputProps={{
+              min:1,
+              max:listNum
+            }}
+            onChange={handleCount}
           />
         </FormControl>
 
@@ -103,7 +110,8 @@ function SettingsModal() {
           <FormLabel>Sort By</FormLabel>
           <Select
             label="Sort By"
-            // Add your logic to handle the selected value
+            onChange={handleSort}
+            defaultValue={sortWord}
           >
             <MenuItem value="difficulty">Difficulty</MenuItem>
             {/* You can add more sorting options here */}
@@ -124,10 +132,7 @@ function SettingsModal() {
         <DialogContent>{renderSettingsForm()}</DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Save
+            Close
           </Button>
         </DialogActions>
       </Dialog>

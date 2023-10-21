@@ -10,7 +10,13 @@ import {
 } from "@mui/material";
 import SettingsModal from "../SettingsModal";
 
-const Listform = ({ handleChange, values, handleSubmit }) => {
+
+
+const Listform = ({
+  handleChange,
+  handleSubmit,
+  listNum,
+}) => {
   return (
     <FormControl
       sx={{ border: "2px solid #ccc", borderRadius: "4px", padding: "10px" }}
@@ -22,7 +28,9 @@ const Listform = ({ handleChange, values, handleSubmit }) => {
           </Typography>
         </Grid>
         <Grid item xs={4} textAlign="right">
-          <SettingsModal />
+          <SettingsModal
+            listNum={listNum}
+          />
         </Grid>
       </Grid>
 
@@ -50,7 +58,6 @@ const Listform = ({ handleChange, values, handleSubmit }) => {
         Difficulty
       </Typography>
       <Slider
-        value={values}
         name="difficulty"
         onChange={handleChange}
         defaultValue={4}

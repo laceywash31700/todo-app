@@ -41,7 +41,7 @@ import { UserContext } from "../../App";
 function List({ list, toggleComplete, incomplete, deleteItem }) {
   // setup use context and grab global props
   const { settings } = useContext(UserContext);
-  const { hideCompletedItems, displayCount } = settings;
+  const { hideCompletedItems, displayCount , sortWord} = settings;
   
   // for my pagination
   const [count, setCount] = useState(1);
@@ -76,7 +76,9 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
 
   return (
     <>
-      {task.slice(startIdx, endIdx).map((item) => (
+      {task.sort((a,b)=> a[sortWord] - b[sortWord]).slice(startIdx, endIdx).map((item) => {
+        console.log("Logging Item:", item);
+      return(
         <Card
           variant="outlined"
           key={item.id}
@@ -112,8 +114,8 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
             />
           </CardContent>
           <Divider />
-        </Card>
-      ))}
+        </Card>)
+})}
       <Typography
         sx={{ display: "flex", justifyContent: "center", marginTop: "5px" }}
       >

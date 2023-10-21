@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import SettingsModal from "./Components/SettingsModal"
 import Todo from "./Components/Todo";
 import light from "./Components/Themes/light";
 import dark from "./Components/Themes/dark";
@@ -47,7 +46,8 @@ const App = () => {
           settings: {
             displayCount,
             setDisplayCount,
-            toggleHideCompletedItems: () => setHideCompletedItems(!hideCompletedItems? true: false),
+            hideCompletedItems,
+            toggleHideCompletedItems: (item) => setHideCompletedItems(item),
             sortWord,
             setSortWord,
             theme,
