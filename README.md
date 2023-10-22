@@ -6,8 +6,8 @@
 
 ### Author: John Cokos
 
-- [tests report](https://github.com/codefellows/code-401-javascript-example-lab/actions)
-- [front-end](https://code-401-js-lab-example.herokuapp.com/status)
+- [tests report]()
+- [front-end]()
 
 ### Setup
 

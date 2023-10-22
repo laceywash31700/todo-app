@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Todo from "./Components/Todo";
 import light from "./Components/Themes/light";
 import dark from "./Components/Themes/dark";
-
+import LoginProvider from "./Components/Context/Settings/context";
 // NOTE TO SELF:
 
 // This the  UserContext or global state its a object that you need to deconstruct first...
@@ -37,27 +37,25 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <UserContext.Provider
-        value={{
-          user: {
-            name: "",
-            email: "",
-          },
-          settings: {
-            displayCount,
-            setDisplayCount,
-            hideCompletedItems,
-            toggleHideCompletedItems: (item) => setHideCompletedItems(item),
-            sortWord,
-            setSortWord,
-            theme,
-            toggleTheme: () => setTheme(theme === light ? dark : light )
-          },
-        }}
-      >
-        <CssBaseline />
-        <Todo />
-      </UserContext.Provider>
+      <LoginProvider>
+        <UserContext.Provider
+          value={{
+            settings: {
+              displayCount,
+              setDisplayCount,
+              hideCompletedItems,
+              toggleHideCompletedItems: (item) => setHideCompletedItems(item),
+              sortWord,
+              setSortWord,
+              theme,
+              toggleTheme: () => setTheme(theme === light ? dark : light),
+            },
+          }}
+        >
+          <CssBaseline />
+          <Todo />
+        </UserContext.Provider>
+      </LoginProvider>
     </ThemeProvider>
   );
 };

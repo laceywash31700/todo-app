@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { Typography, FormControlLabel, FormGroup } from "@mui/material";
+import { Typography } from "@mui/material";
+import Login from "../Login";
 
 
 // palette: {
@@ -33,6 +34,7 @@ const Header = ({ incomplete }) => {
       >
         To Do List: {incomplete.length} items pending
       </Typography>
+      <Login/>
     </header>
   );
 };
