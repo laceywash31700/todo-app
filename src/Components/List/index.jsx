@@ -9,6 +9,7 @@ import {
   Pagination,
 } from "@mui/material";
 import { UserContext } from "../../App";
+import Auth from "../Context/Settings/auth";
 
 // NOTE TO SELF:
 
@@ -77,7 +78,6 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
   return (
     <>
       {task.sort((a,b)=> a[sortWord] - b[sortWord]).slice(startIdx, endIdx).map((item) => {
-        console.log("Logging Item:", item);
       return(
         <Card
           variant="outlined"
@@ -97,12 +97,15 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
             <Typography variant="body2">
               Difficulty: {item.difficulty}
             </Typography>
+            <Auth capability= "update">
             <div
               style={{ cursor: "pointer" }}
               onClick={() => toggleComplete(item.id)}
             >
               Completed: <Checkbox checked={item.complete} disabled />
             </div>
+            </Auth>
+            <Auth capability ={'update'}>
             <Chip
               onDelete={() => deleteItem(item.id)}
               label="Delete"
@@ -112,6 +115,7 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
                 },
               }}
             />
+            </Auth>
           </CardContent>
           <Divider />
         </Card>)

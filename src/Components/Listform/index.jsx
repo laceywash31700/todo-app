@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import SettingsModal from "../SettingsModal";
-
+import Auth from "../Context/Settings/auth";
 
 
 const Listform = ({
@@ -21,19 +21,26 @@ const Listform = ({
     <FormControl
       sx={{ border: "2px solid #ccc", borderRadius: "4px", padding: "10px" }}
     >
+      
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={8}>
+          <Auth capability="create">
           <Typography variant="h5" gutterBottom>
             Add Task
           </Typography>
+          </Auth>
         </Grid>
+
+        <Auth capability='read'>
         <Grid item xs={4} textAlign="right">
           <SettingsModal
             listNum={listNum}
           />
         </Grid>
+        </Auth>
       </Grid>
 
+      <Auth capability={"create"}>
       <FormLabel htmlFor="text">To Do Item</FormLabel>
       <TextField
         id="text"
@@ -71,6 +78,8 @@ const Listform = ({
       <Button type="submit" variant="contained" onClick={handleSubmit}>
         Add Item
       </Button>
+      </Auth>
+
     </FormControl>
   );
 };

@@ -33,7 +33,7 @@ import { UserContext } from "../../App";
 
 function SettingsModal({listNum}) {
   const { settings } = useContext(UserContext);
-  const { theme, toggleTheme, hideCompletedItems, setDisplayCount, toggleHideCompletedItems, sortWord, setSortWord} = settings;
+  const { theme, toggleTheme, hideCompletedItems, displayCount, setDisplayCount, toggleHideCompletedItems, sortWord, setSortWord} = settings;
   const [open, setOpen] = useState(false);
 
 
@@ -51,8 +51,8 @@ function SettingsModal({listNum}) {
   };
 
   const handleCount = (e) => {
-    e.preventDefault()
     setDisplayCount(e.target.value);
+    e.preventDefault()
   };
 
   const handleSort = (e) => {
@@ -97,6 +97,7 @@ function SettingsModal({listNum}) {
           <TextField
             id="itemsPerPage"
             type="number"
+            defaultValue={displayCount}
             variant="outlined"
             inputProps={{
               min:1,

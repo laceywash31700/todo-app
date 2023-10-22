@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { When } from "react-if";
 
-import { LoginContext } from "./context.jsx";
+import { LoginContext } from "../Context/Settings/context.jsx";
 
 const Login = () => {
   const context = useContext(LoginContext);
