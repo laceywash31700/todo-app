@@ -7,26 +7,6 @@ import dark from "./Components/Themes/dark";
 import LoginProvider from "./Components/Context/Settings/context";
 // NOTE TO SELF:
 
-// This the  UserContext or global state its a object that you need to deconstruct first...
-// user: {
-//   name: '',
-//   email: '',
-// },
-// settings: {
-//   displayCount: 3,
-//   hideCompletedItems: false,
-//   sortWord: 'difficulty',
-//   theme: null
-// }
-
-// like so..
-// const { settings, user } = useContext(UserContext);
-
-// then you can decontruct like this...
-// const { hideCompletedItems, displayCount } = settings;
-
-// or this...
-// const {name, email } = user
 export const UserContext = React.createContext({});
 
 const App = () => {
@@ -53,7 +33,9 @@ const App = () => {
           }}
         >
           <CssBaseline />
+
           <Todo />
+
         </UserContext.Provider>
       </LoginProvider>
     </ThemeProvider>
