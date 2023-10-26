@@ -4,57 +4,87 @@ import { v4 as uuid } from "uuid";
 import Header from "../Header";
 import List from "../List";
 import Listform from "../Listform";
-import mockItems from "./mockItems.json";
 import Auth from "../Context/Settings/auth";
+import axios from "axios";
 
 // NOTE TO SELF:
 
-// This the  UserContext or global state its a object that you need to deconstruct first...
-// user: {
-//   name: '',
-//   email: '',
-// },
-// settings: {
-//   displayCount: 3,
-//   hideCompletedItems: false,
-//   sortWord: 'difficulty',
-//   theme: null
-// }
-
-// like so..
-// const { settings, user } = useContext(UserContext);
-
-// then you can decontruct like this...
-// const { hideCompletedItems, displayCount } = settings;
-
-// or this...
-// const {name, email } = user
-
 const Todo = () => {
   const [value] = useState({ difficulty: 4 });
-  const [list, setList] = useState(mockItems);
+  const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem, value);
 
-  function addItem(item) {
+async function callApi(config) {
+ const response = await axios(config);
+ console.log(`I am the response from a ${config.method} request`,response.data)
+ return response.data;
+}
+
+useEffect(() => {
+  (async () =>{
+   const items = await axios.get(`https://lab34server.onrender.com/todo`);
+   setList(items.data);
+  })();
+}, [])
+
+ async function addItem(item) {
     item.id = uuid();
     item.complete = false;
     setList([...list, item]);
+    const config = {
+      baseURL: `https://lab34server.onrender.com`,
+      url: "/todo",
+      method: "post",
+      data:  item ,
+    };
+    try{
+      const data = await callApi(config);
+      console.log(data);
+    } catch(e){
+      console.error(e)
+    }
   }
 
-  function deleteItem(id) {
+ async function deleteItem(id) {
+    const config = {
+      baseURL: `https://lab34server.onrender.com`,
+      url: `/todo/${id}`,
+      method: "delete",
+    };
     const items = list.filter((item) => item.id !== id);
     setList(items);
+    try{
+      const data = await callApi(config);
+      console.log(data);
+    } catch(e){
+      console.error(e)
+    }
   }
 
-  function toggleComplete(id) {
+ async function toggleComplete(id) {
+    let updatedItem;
     const items = list.map((item) => {
       if (item.id === id) {
         item.complete = !item.complete;
       }
-      return item;
+      return updatedItem = item;
     });
     setList(items);
+
+    const config = {
+      baseURL: `https://lab34server.onrender.com`,
+      url: `/todo/${id}`,
+      method: "put",
+      data: updatedItem,
+    };
+    try{
+      const data = await callApi(config);
+      console.log(data);
+    } catch(e){
+      console.error(e)
+    }
+    
   }
 
   useEffect(() => {
@@ -85,9 +115,8 @@ const Todo = () => {
             />
           </div>
         </Auth>
+
         <div style={{ width: "45%" }}>
-
-
           <Auth capability="read">
             <List
               list={list}
@@ -96,7 +125,6 @@ const Todo = () => {
               deleteItem={deleteItem}
             />
           </Auth>
-          
         </div>
       </div>
     </>
