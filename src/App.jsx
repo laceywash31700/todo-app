@@ -14,7 +14,7 @@ const App = () => {
   const [displayCount, setDisplayCount] = useState(3);
   const [sortWord, setSortWord] = useState("difficulty");
   const [hideCompletedItems, setHideCompletedItems] = useState(false);
-
+{}
   return (
     <ThemeProvider theme={theme}>
       <LoginProvider>
