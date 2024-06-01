@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Todo from "./Components/Todo";
 import light from "./Components/Themes/light";
 import dark from "./Components/Themes/dark";
-import LoginProvider from "./Components/Context/Settings/context";
+import AuthProvider from "./Components/Context/Settings/context";
 // NOTE TO SELF:
 
 export const UserContext = React.createContext({});
@@ -14,10 +14,11 @@ const App = () => {
   const [displayCount, setDisplayCount] = useState(3);
   const [sortWord, setSortWord] = useState("difficulty");
   const [hideCompletedItems, setHideCompletedItems] = useState(false);
+
 {}
   return (
     <ThemeProvider theme={theme}>
-      <LoginProvider>
+      <AuthProvider>
         <UserContext.Provider
           value={{
             settings: {
@@ -37,7 +38,7 @@ const App = () => {
           <Todo />
 
         </UserContext.Provider>
-      </LoginProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 };

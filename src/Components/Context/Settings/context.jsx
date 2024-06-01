@@ -1,49 +1,37 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, createContext } from "react";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
-// const testUsers = {
-//   Administrator: {
-//     password: "admin",
-//     name: "Administrator",
-//     token:
-//       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInJvbGUiOiJhZG1pbiIsImNhcGFiaWxpdGllcyI6IlsnY3JlYXRlJywncmVhZCcsJ3VwZGF0ZScsJ2RlbGV0ZSddIiwiaWF0IjoxNTE2MjM5MDIyfQ.pAZXAlTmC8fPELk2xHEaP1mUhR8egg9TH5rCyqZhZkQ",
-//   },
-//   Editor: {
-//     password: "editor",
-//     name: "Editor",
-//     token:
-//       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRWRpdG9yIiwicm9sZSI6ImVkaXRvciIsImNhcGFiaWxpdGllcyI6IlsncmVhZCcsJ3VwZGF0ZSddIiwiaWF0IjoxNTE2MjM5MDIyfQ.3aDn3e2pf_J_1rZig8wj9RiT47Ae2Lw-AM-Nw4Tmy_s",
-//   },
-//   Writer: {
-//     password: "writer",
-//     name: "Writer",
-//     token:
-//       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV3JpdGVyIiwicm9sZSI6IndyaXRlciIsImNhcGFiaWxpdGllcyI6IlsnY3JlYXRlJ10iLCJpYXQiOjE1MTYyMzkwMjJ9.dmKh8m18mgQCCJp2xoh73HSOWprdwID32hZsXogLZ68",
-//   },
-//   User: {
-//     password: "user",
-//     name: "User",
-//     token:
-//       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVXNlciIsInJvbGUiOiJ1c2VyIiwiY2FwYWJpbGl0aWVzIjoiWydyZWFkJ10iLCJpYXQiOjE1MTYyMzkwMjJ9.WXYvIKLdPz_Mm0XDYSOJo298ftuBqqjTzbRvCpxa9Go",
-//   },
-// };
-const capabilities = {
-  Administrator: ["create", "update", "delete", "read"],
-  Editor: ["create", "update", "read"],
-  Writer: ["create", "read"],
-  User: ["read"],
-};
+const url = import.meta.env.VITE_REACT_APP_SERVER;
 
-export const LoginContext = React.createContext();
 
-const LoginProvider = (props) => {
+export const AuthContext = createContext();
+
+const AuthProvider = (props) => {
+  const capabilities = {
+    Administrator: ["create", "update", "delete", "read"],
+    Editor: ["create", "update", "read"],
+    Writer: ["create", "read"],
+    User: ["read"],
+  };
+
   const [state, setState] = useState({
-    loggedIn: false,
+    isLoggedIn: false,
     user: { capabilities: [] },
     error: null,
+    token: null
   });
+
+const setAuthState = (isLoggedIn, token, user, error) => {
+    if (isLoggedIn) {
+      cookie.save("auth", token);
+    } else {
+      cookie.remove("auth");
+    }
+    setState({ token, isLoggedIn, user, error: error || null });
+  };
+
 
   const can = (capability) => {
     return state?.user?.capabilities?.includes(capability);
@@ -51,66 +39,87 @@ const LoginProvider = (props) => {
 
   const validateToken = useCallback((token) => {
     try {
-      let validUser = jwt_decode(token);
-      validUser.capabilities = capabilities[validUser.username]
-      setLoginState(true, token, validUser);
+      let user = jwt_decode(token);
+      if (user.expiresIn * 1000 < Date.now()) {
+        throw new Error("Token expired");
+      }
+      else{
+      user.capabilities = capabilities[user.capabilities];
+      setAuthState(true, token, user)
+      }
     } catch (e) {
-      setLoginState(false, null, {}, e);
+      setAuthState(false, null, {}, e);
       console.log("Token Validation Error", e);
     }
   }, []);
 
-  const setLoginState = (loggedIn, token, user, error) => {
-    cookie.save("auth", token);
-    setState({ token, loggedIn, user, error: error || null });
-  };
+  
 
   const logout = () => {
-    setLoginState(false, null, {});
+    setAuthState(false, null, {});
   };
 
   const login = async (username, password) => {
-    let { loggedIn, token, user } = state;
+    let { loggedIn, user } = state;
     const config = {
-      baseURL: `https://lab34server.onrender.com`,
+      baseURL: url,
       url: "/signin",
-      method: "post",
+      method: "post", 
       auth: { username, password },
     };
     const response = await axios(config);
-    const auth = response.data.user;
+    const auth = response.data;
     if (auth && auth.username === username) {
       try {
-        validateToken(auth.token);
+        const token = auth.token;
+        validateToken(token);
       } catch (e) {
-        setLoginState(loggedIn, token, user, e);
+        setAuthState(loggedIn, token, user, e);
         console.error(e);
       }
     }
   };
 
+    const signUp = async (username, password, role) => {
+      try {
+        // Make a POST request to your signup endpoint
+        const response = await axios.post(`${url}/signup`, {
+          username: username,
+          password: password,
+          role: role,
+        });
+        // Handle the response
+        if (response.status === 201) {
+          // If signup was successful, save the token in a cookie
+          const token = response.data.token;  
+          validateToken(token); // Call the validateToken function to set the user's authentication state
+
+        } else {
+          // If signup failed, handle the error
+          console.error("Signup failed:", response.data.error);
+        }
+      } catch (error) {
+        // Handle any errors that occur during the request
+        console.error("Error signing up:", error);
+      }
+    };
+  
+
   useEffect(() => {
-    if (state.user.name) return;
+    if (state.user) return;
     const qs = new URLSearchParams(window.location.search);
     const cookieToken = cookie.load("auth");
     const token = qs.get("token") || cookieToken || null;
     validateToken(token);
-  }, [state.user.name, validateToken]);
-
-  // componentDidMount() {
-  //   const qs = new URLSearchParams(window.location.search);
-  //   const cookieToken = cookie.load("auth");
-  //   const token = qs.get("token") || cookieToken || null;
-  //   validateToken(token);
-  // }
+  }, [state.user.capabilities]);
 
   return (
-    <LoginContext.Provider
-      value={{ ...state, can: can, login: login, logout: logout , }}
+    <AuthContext.Provider
+      value={{ ...state, can: can, login: login, logout: logout, signUp: signUp }}
     >
       {props.children}
-    </LoginContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export default LoginProvider;
+export default AuthProvider;

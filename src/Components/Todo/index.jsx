@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useForm from "../../hooks/form";
 import { v4 as uuid } from "uuid";
 import Header from "../Header";
 import List from "../List";
-import Listform from "../Listform";
+import ListForm from "../Listform";
 import Auth from "../Context/Settings/auth";
 import axios from "axios";
 
@@ -104,27 +104,25 @@ useEffect(() => {
           marginTop: "20px",
         }}
       >
-        <Auth capability="read">
+
           <div style={{ width: "20%" }}>
-            <Listform
+            <ListForm
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               incomplete={incomplete}
               listNum={list.length}
-              list={list}
-            />
+              list={list} />
           </div>
-        </Auth>
+       
 
         <div style={{ width: "45%" }}>
-          <Auth capability="read">
+         
             <List
               list={list}
               toggleComplete={toggleComplete}
               incomplete={incomplete}
               deleteItem={deleteItem}
             />
-          </Auth>
         </div>
       </div>
     </>

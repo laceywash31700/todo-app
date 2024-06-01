@@ -1,11 +1,10 @@
 import { useContext } from "react";
 import { When } from "react-if";
-
-import { LoginContext } from "./context.jsx";
+import { AuthContext } from "./context.jsx";
 
 const Auth = (props) => {
-  const context = useContext(LoginContext);
-  const isLoggedIn = context.loggedIn;
+  const context = useContext(AuthContext);
+  const isLoggedIn = context.isLoggedIn;
   const canDo = props.capability ? context.can(props.capability) : true;
   const okToRender = isLoggedIn && canDo;
 
