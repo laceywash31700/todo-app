@@ -37,7 +37,7 @@ function SettingsModal({listNum}) {
   const [open, setOpen] = useState(false);
 
 
-//   handelers
+//   handlers
   const handleOpen = () => {
     setOpen(true);
   };
@@ -59,10 +59,6 @@ function SettingsModal({listNum}) {
     e.preventDefault()
     setSortWord(e.target.value)
     };
-
-  useEffect(() => {
-    console.log('Updated hideCompletedItems:', hideCompletedItems);
-  }, [hideCompletedItems]); 
 
 
   const renderSettingsForm = () => {

@@ -8,6 +8,7 @@ import Auth from "../Context/Settings/auth";
 import axios from "axios";
 
 // NOTE TO SELF:
+const url = import.meta.env.LIST_ITEMS_URL;
 
 const Todo = () => {
   const [value] = useState({ difficulty: 4 });
@@ -17,13 +18,12 @@ const Todo = () => {
 
 async function callApi(config) {
  const response = await axios(config);
- console.log(`I am the response from a ${config.method} request`,response.data)
  return response.data;
 }
 
 useEffect(() => {
   (async () =>{
-   const items = await axios.get(`https://lab34server.onrender.com/todo`);
+   const items = await axios.get(`${url}/todo`);
    setList(items.data);
   })();
 }, [])
@@ -33,14 +33,13 @@ useEffect(() => {
     item.complete = false;
     setList([...list, item]);
     const config = {
-      baseURL: `https://lab34server.onrender.com`,
+      baseURL: `${url}`,
       url: "/todo",
       method: "post",
       data:  item ,
     };
     try{
       const data = await callApi(config);
-      console.log(data);
     } catch(e){
       console.error(e)
     }
@@ -48,7 +47,7 @@ useEffect(() => {
 
  async function deleteItem(id) {
     const config = {
-      baseURL: `https://lab34server.onrender.com`,
+      baseURL: `${url}`,
       url: `/todo/${id}`,
       method: "delete",
     };
@@ -56,7 +55,6 @@ useEffect(() => {
     setList(items);
     try{
       const data = await callApi(config);
-      console.log(data);
     } catch(e){
       console.error(e)
     }
@@ -73,14 +71,13 @@ useEffect(() => {
     setList(items);
 
     const config = {
-      baseURL: `https://lab34server.onrender.com`,
+      baseURL: `${url}`,
       url: `/todo/${id}`,
       method: "put",
       data: updatedItem,
     };
     try{
       const data = await callApi(config);
-      console.log(data);
     } catch(e){
       console.error(e)
     }
