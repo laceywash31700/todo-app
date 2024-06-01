@@ -11,33 +11,7 @@ import {
 import { UserContext } from "../../App";
 import Auth from "../Context/Settings/auth";
 
-// NOTE TO SELF:
 
-// This the  UserContext or global state its a object that you need to deconstruct first...
-// user: {
-//   name: '',
-//   email: '',
-// },
-// settings: {
-//   displayCount: 3,
-//   hideCompletedItems: false,
-//   sortWord: 'difficulty',
-//   theme: null
-// }
-
-
-// like so..
-// const { settings, user } = useContext(UserContext);
-
-
-// then you can decontruct like this...
-// const { hideCompletedItems, displayCount } = settings;
-
-
-// or this...
-// const {name, email } = user
-
-// sx is a styling prop in MUI use it for inline coding.
 
 function List({ list, toggleComplete, incomplete, deleteItem }) {
   // setup use context and grab global props
@@ -120,6 +94,7 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
           <Divider />
         </Card>)
 })}
+    <Auth capability= {"read"}>
       <Typography
         sx={{ display: "flex", justifyContent: "center", marginTop: "5px" }}
       >
@@ -131,7 +106,7 @@ function List({ list, toggleComplete, incomplete, deleteItem }) {
         variant="outlined"
         color="primary"
         onChange={handleChange}
-      />
+      /></Auth>
     </>
   );
 }
