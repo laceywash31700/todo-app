@@ -1,7 +1,5 @@
 # toDo app
 
-# LAB - 32
-
 ## Deployment Test
 
 ### Author: John Cokos
@@ -13,7 +11,8 @@
 
 #### `.env` requirements
 
-- `PORT` - 5173
+VITE_REACT_APP_SERVER
+LIST_ITEMS_URL
 
 #### Running the app
 
